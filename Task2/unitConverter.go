@@ -7,11 +7,11 @@ import (
 )
 
 type (
-	Feet       float64
-	Centimeter float64
-	//hour			float64
+	Feet         float64
+	Centimeter   float64
 	Minutes      float64
 	Seconds      float64
+	Hours        float64
 	Milliseconds float64
 	Celsius      float64
 	Fahrenheit   float64
@@ -21,29 +21,6 @@ type (
 	Kilograms    float64
 	Pounds       float64
 )
-
-/*
-type Converter struct(
-	FeetToCentimeter	Centimeter
-	CentimeterToFeet	Feet
-	MinutesToSeconds	Seconds
-	seconds2Minutes	Minutes
-	//Minutes@millliseconds	Milliseconds
-	seconds2milliseconds	Milliseconds
-	milliseconds2seconds	Seconds
-	//milliseconds2Minutes	Minutes
-	CelsiuisToFahrenheit	Fahrenheit
-	fahrenheit2Celsius	Celsius
-	KelvinToCelsius	celcius
-	KelvinToFahrenheit	Fahrenheit
-	//Celsius@Kelvin	Kelvin
-	//fahreheit@Kelvin	Kelvin
-	RadianToDegree	Degree
-	Degree@Radian	Radian
-	kilogram2pounds	Pounds
-	Pounds@Kilograms
-)
-*/
 
 // Converter converts values between scientific units
 type Converter struct{}
@@ -67,7 +44,7 @@ func main() {
 
 	//User picks disired conversion
 	cvrPointer := reflect.TypeOf(&cvr)
-	fmt.Println("There are", cvrPointer.NumMethod(), "conversion options")
+	fmt.Println("\nThere are", cvrPointer.NumMethod(), "conversion options")
 
 	selection := make(map[int]string)
 	for i := 1; i <= cvrPointer.NumMethod(); i++ {
@@ -79,9 +56,32 @@ func main() {
 	var value float64
 	fmt.Printf("Enter the serial number of your prefered conversion then the value to convert : ")
 	fmt.Scan(&SN, &value)
-	//  ???????  //
-	fmt.Println(cvrPointer.Method(SN - 1))
-	//  ???????  //
+
+	switch SN {
+	case 1:
+		fmt.Println("Coversion value is:", cvr.CelsiuisToFahrenheit(Celsius(value)))
+	case 2:
+		fmt.Println("Coversion value is:", cvr.CentimeterToFeet(Centimeter(value)))
+	case 3:
+		fmt.Println("Coversion value is:", cvr.FeetToCentimeter(Feet(value)))
+	case 4:
+		fmt.Println("Coversion value is:", cvr.HoursToMinutes(Hours(value)))
+	case 5:
+		fmt.Println("Coversion value is:", cvr.HoursToSeconds(Hours(value)))
+	case 6:
+		fmt.Println("Coversion value is:", cvr.KelvinToCelsius(Kelvin(value)))
+	case 7:
+		fmt.Println("Coversion value is:", cvr.KelvinToFahrenheit(Kelvin(value)))
+	case 8:
+		fmt.Println("Coversion value is:", cvr.KilogramsToPounds(Kilograms(value)))
+	case 9:
+		fmt.Println("Coversion value is:", cvr.MinutesToSeconds(Minutes(value)))
+	case 10:
+		fmt.Println("Coversion value is:", cvr.RadianToDegree(Radian(value)))
+	case 11:
+		fmt.Println("Coversion value is:", cvr.Seconds2Minutes(Seconds(value)))
+
+	}
 }
 
 func (cvr Converter) CentimeterToFeet(c Centimeter) Feet {
@@ -96,9 +96,18 @@ func (cvr Converter) MinutesToSeconds(m Minutes) Seconds {
 	return Seconds(m * 60)
 }
 
-//Seconds2Minutes converts Seconds to Minutes
 func (cvr Converter) Seconds2Minutes(s Seconds) Minutes {
 	return Minutes(s / 60)
+}
+
+func (cvr Converter) HoursToMinutes(h Hours) Minutes {
+	return Minutes(h * 60)
+}
+
+func (cvr Converter) HoursToSeconds(h Hours) Seconds {
+	m := cvr.HoursToMinutes(h)
+	s := cvr.MinutesToSeconds(m)
+	return s
 }
 
 func (cvr Converter) CelsiuisToFahrenheit(c Celsius) Fahrenheit {
