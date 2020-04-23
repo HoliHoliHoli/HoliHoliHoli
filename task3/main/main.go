@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"holi/task3/websites"
 	"holi/task3/socialmedia"
+	//"encoding/json"
+	//"encoding/xml"
 	"os"
 	"errors"
 )
@@ -12,7 +14,7 @@ func main() {
 	fb := new(websites.Facebook)
 	twtr := new(websites.Twitter)
 	lnkdin := new(websites.Linkedin)
-	err := export(twtr, "twtrdata.txt")
+	err := export(twtr, "twtrdata.json")
 	err = export(fb, "fbdata.txt")
 	err = export(lnkdin, "lnkdin.txt")
 
@@ -27,8 +29,8 @@ func main() {
 // ScrollFeeds prints all social media feeds
 func ScrollFeeds(platforms ...socialmedia.SocialMedia) {
 	for _, sm := range platforms {
-		for a, fd := range sm.Feed() {
-			fmt.Println(a, fd)
+		for _, fd := range sm.Feed() {
+			fmt.Println(fd)
 		}
 		fmt.Println("=================================")
 	}
@@ -39,18 +41,36 @@ func export(u socialmedia.SocialMedia, filename string) error {
 	if err != nil {
 		return errors.New("an error occured opening the file: " + err.Error())
 	}
-	for _, fd := range u.Feed() {
-		n, err := f.Write([]byte(fd + "\n"))
-		if err != nil {
-			return errors.New("an error occured writing to file: " + err.Error())
+
+	switch filename[len(filename)-3:] {
+	case "txt":
+		for _, fd := range u.Feed() {
+			n, err := f.Write([]byte(fd + "\n"))
+			if err != nil {
+				return errors.New("an error occured writing to file: " + err.Error())
+			}
+			fmt.Printf("wrote %d bytes\n", n)
 		}
-		fmt.Printf("wrote %d bytes\n", n)
+/*
+	case "son":
+		//u, _ := json.Marshal(u)
+		for abc, fd := range u.Feed() {
+			very := map[int]string{abc:fd}
+			n, err := f.Write([]byte(very + "\n"))
+			if err != nil {
+				return errors.New("an error occured writing to file: " + err.Error())
+			}
+			fmt.Printf("wrote %d bytes\n", n)
+		}
+	case "xml" */
 	}
+
+	
 	return nil
 }
 
 //    new new
 
 type xmlStruct struct {
-
+	
 }
