@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"holi/task3/socialmedia"
 	"encoding/json"
-	//"encoding/xml"
+	"encoding/xml"
 	"os"
 	"errors")
 
@@ -39,9 +39,18 @@ func Export(u socialmedia.SocialMedia, filenames []string) error {
 			}
 
 		case "xml":
+			for _, fd := range u.Feed(){
+				xmlline, _ := xml.MarshalIndent(fd, "", "")
+				n, err := f.Write([]byte(string(xmlline) + "\n"))
+				if err != nil {
+					return errors.New("an error occured writing to file: " + err.Error())
+				}
+				fmt.Printf("wrote %d bytes\n", n)
+			}
 			
 		}
 
 	}
 	return nil
 }
+

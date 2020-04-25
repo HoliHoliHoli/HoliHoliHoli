@@ -12,9 +12,9 @@ func main() {
 	fb := new(websites.Facebook)
 	twtr := new(websites.Twitter)
 	lnkdin := new(websites.Linkedin)
-	err := exporter.Export(twtr, []string{"twtrdata.txt", "twtrdata.json"})
-	err = exporter.Export(fb, []string{"fbdata.txt", "fbdata.json"})
-	err = exporter.Export(lnkdin, []string{"lnkdin.txt", "lnkdin.json"})
+	err := exporter.Export(twtr, []string{"task3/twtrdata.txt", "task3/twtrdata.json", "task3/twtrdata.xml"})
+	err = exporter.Export(fb, []string{"task3/fbdata.txt", "task3/fbdata.json", "task3/fbdata.xml"})
+	err = exporter.Export(lnkdin, []string{"task3/lnkdin.txt", "task3/lnkdin.json", "task3/lnkdin.xml"})
 
 
 	if err != nil {
